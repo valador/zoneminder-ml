@@ -1,5 +1,5 @@
 ARG zm_version
-FROM nitwof/zoneminder:${zm_version}
+FROM slayerus/zoneminder:${zm_version}
 
 RUN \
     apt-get update && \

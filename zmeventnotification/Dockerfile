@@ -1,5 +1,5 @@
 ARG mlbase_version
-FROM nitwof/mlbase:${mlbase_version}
+FROM slayerus/mlbase:${mlbase_version}
 
 ARG version
 ARG zm_version

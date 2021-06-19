@@ -4,20 +4,20 @@ services:
   mlbase:
     build:
       context: ./mlbase
-      dockerfile: Dockerfile
+      dockerfile: dist/cpu/Dockerfile
       args:
         python_version: '3.8'
-        opencv_version: '4.5.0'
-        dlib_version: '19.21.1'
-    image: nitwof/mlbase
+        opencv_version: '4.5.2'
+        dlib_version: 'v19.22'
+    #image: nitwof/mlbase
 
   zm:
     build:
       context: ./zoneminder
       args:
-        version: '1.34'
-        ffmpeg_version: 4.3-ubuntu1804
-    image: nitwof/zoneminder:1.34
+        version: '1.36.4'
+        ffmpeg_version: 4.4-ubuntu1804
+    #image: nitwof/zoneminder:1.34
     ipc: service:shmem
     environment:
       TZ: 'Europe/Moscow'
@@ -26,8 +26,8 @@ services:
       ZM_DB_USER: zmuser
       ZM_DB_PASS: zmpass
     volumes:
-      - ./.volumes/zm/logs:/var/log/zm
-      - ./.volumes/zm/data:/var/cache/zoneminder
+      - zm-log:/var/log/zm
+      - zm-data:/var/cache/zoneminder
       - zm-run:/var/run/zm
       - zm-tmp:/tmp/zm
     depends_on:
@@ -39,10 +39,10 @@ services:
       context: ./zmeventnotification
       dockerfile: Dockerfile
       args:
-        version: '6.0.6'
-        zm_version: '1.34'
+        version: 'v6.1.25'
+        zm_version: '1.36.4'
         mlbase_version: 'cpu'
-    image: nitwof/zmeventnotification:6.0.6
+    #image: nitwof/zmeventnotification:6.0.6
     ipc: service:shmem
     environment:
       TZ: 'Europe/Moscow'
@@ -53,12 +53,12 @@ services:
     volumes:
       # - ./.config/zmeventnotification.ini:/etc/zm/zmeventnotification.ini:ro
       # - ./.config/objectconfig.ini:/etc/zm/objectconfig.ini:ro
-      - ./.config/zmeventnotification.mlapi.ini:/etc/zm/zmeventnotification.ini:ro
-      - ./.config/objectconfig.mlapi.ini:/etc/zm/objectconfig.ini:ro
-      - ./.volumes/zm/logs:/var/log/zm
-      - ./.volumes/zmen/images:/var/lib/zmeventnotification/images
-      - ./.volumes/zmen/known_faces:/var/lib/zmeventnotification/known_faces
-      - ./.volumes/zmen/unknown_faces:/var/lib/zmeventnotification/unknown_faces
+      #- ./.config/zmeventnotification.mlapi.ini:/etc/zm/zmeventnotification.ini:ro
+      #- ./.config/objectconfig.mlapi.ini:/etc/zm/objectconfig.ini:ro
+      - zm-log:/var/log/zm
+      - zm-images:/var/lib/zmeventnotification/images
+      - zm-known_faces:/var/lib/zmeventnotification/known_faces
+      - zm-unknown_faces:/var/lib/zmeventnotification/unknown_faces
       - zmen-push:/var/lib/zmeventnotification/push
     depends_on:
       - shmem
@@ -69,10 +69,10 @@ services:
       context: ./zmeventnotification
       dockerfile: mlapi/Dockerfile
       args:
-        version: '6.0.6'
-        zm_version: '1.34'
+        version: 'v6.1.25'
+        zm_version: '1.36.4'
         python_version: '3.8'
-    image: nitwof/zmeventnotification:6.0.6-mlapi
+    #image: nitwof/zmeventnotification:6.0.6-mlapi
     ipc: service:shmem
     environment:
       TZ: 'Europe/Moscow'
@@ -81,10 +81,10 @@ services:
       ZM_DB_USER: zmuser
       ZM_DB_PASS: zmpass
     volumes:
-      - ./.config/zmeventnotification.mlapi.ini:/etc/zm/zmeventnotification.ini:ro
-      - ./.config/objectconfig.mlapi.ini:/etc/zm/objectconfig.ini:ro
-      - ./.volumes/zm/logs:/var/log/zm
-      - ./.volumes/zmen/images:/var/lib/zmeventnotification/images
+      #- ./.config/zmeventnotification.mlapi.ini:/etc/zm/zmeventnotification.ini:ro
+      #- ./.config/objectconfig.mlapi.ini:/etc/zm/objectconfig.ini:ro
+      - zm-log:/var/log/zm
+      #- ./.volumes/zmen/images:/var/lib/zmeventnotification/images
       - zmen-push:/var/lib/zmeventnotification/push
     depends_on:
       - shmem
@@ -97,23 +97,23 @@ services:
       args:
         version: 'master'
         mlbase_version: 'cpu'
-    image: nitwof/mlapi:latest
+    #image: nitwof/mlapi:latest
     environment:
       MLAPI_USER: zmuser
       MLAPI_PASSWORD: zmpass
     volumes:
-      - ./.config/mlapiconfig.ini:/mlapi/mlapiconfig.ini:ro
-      - ./.volumes/mlapi/images:/mlapi/images
-      - ./.volumes/mlapi/known_faces:/mlapi/known_faces
-      - ./.volumes/mlapi/unknown_faces:/mlapi/unknown_faces
+      #- ./.config/mlapiconfig.ini:/mlapi/mlapiconfig.ini:ro
+      #- ./.volumes/mlapi/images:/mlapi/images
+      #- ./.volumes/mlapi/known_faces:/mlapi/known_faces
+      #- ./.volumes/mlapi/unknown_faces:/mlapi/unknown_faces
       - mlapi-db:/mlapi/db
 
   zmweb:
     build:
       context: ./zmweb
       args:
-        zm_version: '1.34'
-    image: nitwof/zoneminder:1.34-apache
+        zm_version: '1.36.4'
+    #image: nitwof/zoneminder:1.34-apache
     ipc: service:shmem
     environment:
       TZ: 'Europe/Moscow'
@@ -122,8 +122,8 @@ services:
       ZM_DB_USER: zmuser
       ZM_DB_PASS: zmpass
     volumes:
-      - ./.volumes/zm/logs:/var/log/zm
-      - ./.volumes/zm/data:/var/cache/zoneminder
+      - zm-log:/var/log/zm
+      - zm-data:/var/cache/zoneminder
       - zm-run:/var/run/zm
       - zm-tmp:/tmp/zm
     ports:
@@ -133,7 +133,12 @@ services:
       - db
 
   zmaudit:
-    image: nitwof/zoneminder:1.34
+    #image: nitwof/zoneminder:1.34
+    build:
+      context: ./zoneminder
+      args:
+        version: '1.36.4'
+        ffmpeg_version: 4.4-ubuntu1804
     command: '/usr/bin/zmaudit.pl -c'
     environment:
       TZ: 'Europe/Moscow'
@@ -142,8 +147,8 @@ services:
       ZM_DB_USER: zmuser
       ZM_DB_PASS: zmpass
     volumes:
-      - ./.volumes/zm/logs:/var/log/zm
-      - ./.volumes/zm/data:/var/cache/zoneminder
+      - zm-log:/var/log/zm
+      - zm-data:/var/cache/zoneminder
       - zm-run:/var/run/zm
       - zm-tmp:/tmp/zm
     depends_on:
@@ -153,7 +158,7 @@ services:
   shmem:
     image: alpine:3.12
     command: sleep infinity
-    shm_size: '5gb'
+    shm_size: '2gb'
     ipc: shareable
 
   logrotate:
@@ -164,7 +169,7 @@ services:
       LOGROTATE_COMPRESSION: compress
       LOGROTATE_SIZE: 10M
     volumes:
-      - ./.volumes/zm/logs:/var/log/zm
+      - zm-log:/var/log/zm
 
   db:
     image: mariadb:10.5
@@ -180,6 +185,11 @@ services:
 volumes:
   db:
   mlapi-db:
+  zm-images:
+  zm-known_faces:
+  zm-unknown_faces:
   zmen-push:
   zm-run:
   zm-tmp:
+  zm-log:
+  zm-data:
