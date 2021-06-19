@@ -12,6 +12,8 @@ RUN \
     apt-get update && \
     # Install dependenceis
     apt-get install -y --no-install-recommends \
+      libev-dev \
+      libevdev2 \
       build-essential \
       git \
       python${PYTHON_VERSION}-dev \
