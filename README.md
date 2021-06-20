@@ -2,6 +2,7 @@
 
 ```bash
 docker-compose run --rm zm sh -c 'mysql -h ${ZM_DB_HOST} -u ${ZM_DB_USER} -p${ZM_DB_PASS} < /usr/share/zoneminder/db/zm_create.sql'
+docker-compose run --rm zm sh -c 'mysql -h db -u zmuser -D zm -p zm < /usr/share/zoneminder/db/zm_create.sql'
 ```
 
 mlbase тэги
@@ -16,3 +17,10 @@ docker push slayerus/mlbase:cpu
 docker build -t slayerus/zoneminder:1.36 --build-arg version=1.36 --build-arg ffmpeg_version=4.4-ubuntu1804 ./zoneminder/.
 docker push slayerus/zoneminder:1.36
 ```
+
+Переделать ENV для ${MLAPI_DIR}/secrets.ini, ато как то костыляво...
+
+Local vs. Remote server for Machine Learning
+As of version 5.0.0, you can now configure an API gateway for remote machine learning by installing my mlapi server on a remote server. Once setup, simply point your ml_gateway inside objectconfig.ini to the IP/port of your gateway and make sure ml_user and ml_password are the user/password you set up on the API gateway. That’s all.
+
+The advantage of this is that you don’t need to install any ML libraries within zoneminder if you are running mlapi on a different server. Further, mlapi loads the model only once so it is much faster. In older versions this was kludgy because you still had to install ML libraries locally in ZM, but no longer. Infact, I’ve completely switched to mlapi now for my own use. Note that when you use remote detection, you will still need opencv in the host machine (opencv is used for other

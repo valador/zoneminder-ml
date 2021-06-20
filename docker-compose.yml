@@ -1,15 +1,15 @@
 version: '3'
 
 services:
-  mlbase:
-    image: slayerus/mlbase:cpu
-    # build:
-    #   context: ./mlbase
-    #   dockerfile: dist/cpu/Dockerfile
-    #   args:
-    #     python_version: '3.8'
-    #     opencv_version: '4.5.2'
-    #     dlib_version: 'v19.22'
+  # mlbase:
+  #   image: slayerus/mlbase:cpu
+  #   build:
+  #     context: ./mlbase
+  #     dockerfile: dist/cpu/Dockerfile
+  #     args:
+  #       python_version: '3.8'
+  #       opencv_version: '4.5.2'
+  #       dlib_version: 'v19.22'
 
   zm:
     image: slayerus/zoneminder:1.36
@@ -53,12 +53,12 @@ services:
     volumes:
       # - ./.config/zmeventnotification.ini:/etc/zm/zmeventnotification.ini:ro
       # - ./.config/objectconfig.ini:/etc/zm/objectconfig.ini:ro
-      #- ./.config/zmeventnotification.mlapi.ini:/etc/zm/zmeventnotification.ini:ro
-      #- ./.config/objectconfig.mlapi.ini:/etc/zm/objectconfig.ini:ro
+      # - ./.config/zmeventnotification.mlapi.ini:/etc/zm/zmeventnotification.ini:ro
+      # - ./.config/objectconfig.mlapi.ini:/etc/zm/objectconfig.ini:ro
       - zm-log:/var/log/zm
-      - zm-images:/var/lib/zmeventnotification/images
-      - zm-known_faces:/var/lib/zmeventnotification/known_faces
-      - zm-unknown_faces:/var/lib/zmeventnotification/unknown_faces
+      # - zm-images:/var/lib/zmeventnotification/images
+      # - zm-known_faces:/var/lib/zmeventnotification/known_faces
+      # - zm-unknown_faces:/var/lib/zmeventnotification/unknown_faces
       - zmen-push:/var/lib/zmeventnotification/push
     depends_on:
       - shmem
@@ -81,8 +81,8 @@ services:
       ZM_DB_USER: zmuser
       ZM_DB_PASS: zmpass
     volumes:
-      #- ./.config/zmeventnotification.mlapi.ini:/etc/zm/zmeventnotification.ini:ro
-      #- ./.config/objectconfig.mlapi.ini:/etc/zm/objectconfig.ini:ro
+      # - ./.config/zmeventnotification.mlapi.ini:/etc/zm/zmeventnotification.ini:ro
+      # - ./.config/objectconfig.mlapi.ini:/etc/zm/objectconfig.ini:ro
       - zm-log:/var/log/zm
       #- ./.volumes/zmen/images:/var/lib/zmeventnotification/images
       - zmen-push:/var/lib/zmeventnotification/push
@@ -102,7 +102,7 @@ services:
       MLAPI_USER: zmuser
       MLAPI_PASSWORD: zmpass
     volumes:
-      #- ./.config/mlapiconfig.ini:/mlapi/mlapiconfig.ini:ro
+      # - ./.config/mlapiconfig.ini:/mlapi/mlapiconfig.ini:ro
       #- ./.volumes/mlapi/images:/mlapi/images
       #- ./.volumes/mlapi/known_faces:/mlapi/known_faces
       #- ./.volumes/mlapi/unknown_faces:/mlapi/unknown_faces
@@ -133,12 +133,12 @@ services:
       - db
 
   zmaudit:
-    #image: nitwof/zoneminder:1.34
-    build:
-      context: ./zoneminder
-      args:
-        version: '1.36'
-        ffmpeg_version: 4.4-ubuntu1804
+    image: slayerus/zoneminder:1.36
+    # build:
+    #   context: ./zoneminder
+    #   args:
+    #     version: '1.36'
+    #     ffmpeg_version: 4.4-ubuntu1804
     command: '/usr/bin/zmaudit.pl -c'
     environment:
       TZ: 'Europe/Moscow'
@@ -185,9 +185,9 @@ services:
 volumes:
   db:
   mlapi-db:
-  zm-images:
-  zm-known_faces:
-  zm-unknown_faces:
+  # zm-images:
+  # zm-known_faces:
+  # zm-unknown_faces:
   zmen-push:
   zm-run:
   zm-tmp:

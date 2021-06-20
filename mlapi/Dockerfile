@@ -37,7 +37,7 @@ WORKDIR ${MLAPI_DIR}
 
 RUN \
     apt-get update && \
-    apt-get install -y --no-install-recommends wget && \
+    apt-get install -y --no-install-recommends gettext-base wget && \
     # Download models
     ./get_models.sh && \
     # Cleanup
@@ -46,6 +46,15 @@ RUN \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.cache && \
     truncate -s 0 /var/log/*log
+
+COPY ./secrets.ini ${MLAPI_DIR}/secrets.ini.in
+
+RUN mkdir /etc/zm && \
+    ln -s ${MLAPI_DIR}/secrets.ini /etc/zm/secrets.ini
+
+# RUN ls -l /mlapi && \
+#     cat /mlapi/mlapiconfig.ini && \
+#     ls -l /etc/zm
 
 COPY ./init_user.py ${MLAPI_DIR}/
 COPY ./entrypoint.sh /entrypoint.sh
