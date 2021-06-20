@@ -12,7 +12,7 @@ services:
     #     dlib_version: 'v19.22'
 
   zm:
-    image: slayerus/zoneminder:1.36.4
+    image: slayerus/zoneminder:1.36
     # build:
     #   context: ./zoneminder
     #   args:
@@ -39,7 +39,7 @@ services:
       context: ./zmeventnotification
       dockerfile: Dockerfile
       args:
-        version: 'v6.1.25'
+        version: '6.1.25'
         zm_version: '1.36'
         mlbase_version: 'cpu'
     #image: nitwof/zmeventnotification:6.0.6
@@ -69,7 +69,7 @@ services:
       context: ./zmeventnotification
       dockerfile: mlapi/Dockerfile
       args:
-        version: 'v6.1.25'
+        version: '6.1.25'
         zm_version: '1.36'
         python_version: '3.8'
     #image: nitwof/zmeventnotification:6.0.6-mlapi
@@ -112,7 +112,7 @@ services:
     build:
       context: ./zmweb
       args:
-        zm_version: '1.36.4'
+        zm_version: '1.36'
     #image: nitwof/zoneminder:1.34-apache
     ipc: service:shmem
     environment:
@@ -137,7 +137,7 @@ services:
     build:
       context: ./zoneminder
       args:
-        version: '1.36.4'
+        version: '1.36'
         ffmpeg_version: 4.4-ubuntu1804
     command: '/usr/bin/zmaudit.pl -c'
     environment:
