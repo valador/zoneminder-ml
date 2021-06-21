@@ -95,7 +95,7 @@ services:
       context: ./mlapi
       dockerfile: Dockerfile
       args:
-        version: 'master'
+        version: 'v2.2.20'
         mlbase_version: 'cpu'
     #image: nitwof/mlapi:latest
     environment:

@@ -12,6 +12,7 @@ envsubst < ${MLAPI_DIR}/secrets.ini.in > ${MLAPI_DIR}/secrets.ini
 # cat ${MLAPI_DIR}/secrets.ini
 echo "Init user by MLAPI_USER and MLAPI_PASSWORD env variables"
 # env | grep "MLAPI_"
-python3 ${MLAPI_DIR}/init_user.py
+# python3 ${MLAPI_DIR}/init_user.py
+python3 ${MLAPI_DIR}/mlapi_dbuser.py -u ${MLAPI_USER} -p ${MLAPI_PASSWORD} -d ${MLAPI_DIR}/db
 
 exec "$@"
