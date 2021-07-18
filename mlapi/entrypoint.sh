@@ -10,6 +10,9 @@ rm -f ${MLAPI_DIR}/secrets.ini
 # done
 envsubst < ${MLAPI_DIR}/secrets.ini.in > ${MLAPI_DIR}/secrets.ini
 # cat ${MLAPI_DIR}/secrets.ini
+echo "Create MLAPI config (mlapiconfig.ini) based on env variables"
+rm -f ${MLAPI_DIR}/mlapiconfig.ini
+envsubst < ${MLAPI_DIR}/mlapiconfig.ini.in > ${MLAPI_DIR}/mlapiconfig.ini
 echo "Init user by MLAPI_USER and MLAPI_PASSWORD env variables"
 # env | grep "MLAPI_"
 # python3 ${MLAPI_DIR}/init_user.py

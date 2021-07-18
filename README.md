@@ -6,6 +6,7 @@ docker-compose run --rm zm sh -c 'mysql -h db -u zmuser -D zm -p zm < /usr/share
 ```
 
 mlbase тэги
+
 ```
 cpu cuda10.2-cudnn7 cuda10.2-cudnn8 cuda11.0-cudnn8 cuda11.1-cudnn8
 ```

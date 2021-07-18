@@ -47,10 +47,12 @@ RUN \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.cache && \
     truncate -s 0 /var/log/*log
 
-COPY ./secrets.ini ${MLAPI_DIR}/secrets.ini.in
+COPY secrets.ini ${MLAPI_DIR}/secrets.ini.in
+COPY mlapiconfig.ini ${MLAPI_DIR}/mlapiconfig.ini.in
 
-RUN mkdir /etc/zm && \
-    ln -s ${MLAPI_DIR}/secrets.ini /etc/zm/secrets.ini
+# RUN mkdir /etc/zm && \
+#     ln -s ${MLAPI_DIR}/secrets.ini /etc/zm/secrets.ini
+
 
 # RUN ls -l /mlapi && \
 #     cat /mlapi/mlapiconfig.ini && \

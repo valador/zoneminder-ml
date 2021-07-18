@@ -64,31 +64,31 @@ services:
       - shmem
       - db
 
-  zmen-mlapi:
-    build:
-      context: ./zmeventnotification
-      dockerfile: mlapi/Dockerfile
-      args:
-        version: '6.1.25'
-        zm_version: '1.36'
-        python_version: '3.8'
-    #image: nitwof/zmeventnotification:6.0.6-mlapi
-    ipc: service:shmem
-    environment:
-      TZ: 'Europe/Moscow'
-      ZM_DB_HOST: db
-      ZM_DB_NAME: zm
-      ZM_DB_USER: zmuser
-      ZM_DB_PASS: zmpass
-    volumes:
-      # - ./.config/zmeventnotification.mlapi.ini:/etc/zm/zmeventnotification.ini:ro
-      # - ./.config/objectconfig.mlapi.ini:/etc/zm/objectconfig.ini:ro
-      - zm-log:/var/log/zm
-      #- ./.volumes/zmen/images:/var/lib/zmeventnotification/images
-      - zmen-push:/var/lib/zmeventnotification/push
-    depends_on:
-      - shmem
-      - db
+  # zmen-mlapi:
+  #   build:
+  #     context: ./zmeventnotification
+  #     dockerfile: mlapi/Dockerfile
+  #     args:
+  #       version: '6.1.25'
+  #       zm_version: '1.36'
+  #       python_version: '3.8'
+  #   #image: nitwof/zmeventnotification:6.0.6-mlapi
+  #   ipc: service:shmem
+  #   environment:
+  #     TZ: 'Europe/Moscow'
+  #     ZM_DB_HOST: db
+  #     ZM_DB_NAME: zm
+  #     ZM_DB_USER: zmuser
+  #     ZM_DB_PASS: zmpass
+  #   volumes:
+  #     # - ./.config/zmeventnotification.mlapi.ini:/etc/zm/zmeventnotification.ini:ro
+  #     # - ./.config/objectconfig.mlapi.ini:/etc/zm/objectconfig.ini:ro
+  #     - zm-log:/var/log/zm
+  #     #- ./.volumes/zmen/images:/var/lib/zmeventnotification/images
+  #     - zmen-push:/var/lib/zmeventnotification/push
+  #   depends_on:
+  #     - shmem
+  #     - db
 
   mlapi:
     build:

@@ -63,7 +63,8 @@ RUN \
       /tmp/zmeventnotification && \
     cd /tmp/zmeventnotification && \
     ./install.sh \
-      --download-models \
+    # if --download-models - no mlapi
+      --no-download-models \
       --install-config \
       --install-es \
       --install-hook \
